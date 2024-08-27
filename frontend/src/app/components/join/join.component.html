@@ -1,0 +1,42 @@
+<div class="container mt-5">
+  <div *ngIf="connected === 0" class="d-flex flex-column align-items-center">
+    <h3 class="mb-4">Welcome to the Chat</h3>
+    <input [(ngModel)]="userName" placeholder="Enter your username" class="form-control mb-3 w-50">
+    <button (click)="join()" class="btn btn-primary">Join</button>
+  </div>
+
+  <div *ngIf="connected === 1" class="d-flex flex-column align-items-center justify-content-lg-between">
+    <h3 class="mb-4">Enter Chat ID</h3>
+    <div class="d-flex flex-row align-items-center justify-content-around">
+      <input [(ngModel)]="chatID" [ngClass]="notUsedError ? 'is-invalid' : ''" placeholder="Enter Chat ID" class="form-control mb-3 w-50">
+      <div *ngIf="notUsedError" class="invalid-feedback">
+        Please enter a valid chat ID.
+      </div>
+      <button class="btn btn-success mb-3" (click)="createChat()">New Chat</button>
+    </div>
+    <button (click)="joinWithId()" class="btn btn-success">Join Chat</button>
+  </div>
+
+  <div *ngIf="connected === 2">
+    <h3 class="text-center mb-4">Chat Room</h3>
+    <div class="text-center mb-3">
+      <strong>Chat ID:</strong> {{ chatID }}
+    </div>
+    <div class="chat-box border rounded p-3 mb-3" style="height: 35rem; overflow-y: auto;">
+      <div *ngFor="let msg of messages"
+           class="d-flex mb-2"
+           [ngClass]="{'justify-content-end': msg.isUserMessage, 'justify-content-start': !msg.isUserMessage}">
+        <div class="message p-2 rounded w-75"
+             [ngClass]="{'bg-secondary text-white': msg.isUserMessage, 'bg-primary bg-opacity-75': !msg.isUserMessage}">
+          <p class="m-0">
+            <strong>{{ msg.username }}:</strong> {{ msg.message }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="input-group mb-3">
+      <textarea [(ngModel)]="message" class="form-control" rows="3" placeholder="Type your message"></textarea>
+      <button (click)="sendMessage()" class="btn btn-primary">Send</button>
+    </div>
+  </div>
+</div>
